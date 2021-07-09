@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	#app>h2, u{color: blue}
+	#list{width: 500px; height:30px; border: 1px solid lightgray; border-collapse: collapse;}
+	#list td, #list th{border: 1px solid lightgray; text-align: center;}
+	#list>thead>tr{color:white; background-color:blue;}
+	
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app" align="center">
+	<h2>ENCORE HRM LIST</h2>
+	<u>사원추가</u> | <u>이름으로 찾기</u> | <u>아이디로 찾기</u> | <u @click="findAllEmployees">모든사원 보기</u>
+	<hr>
+	
+	<table id="list"  v-if="show">
+		<thead>
+			<tr>
+				<th>사원 아이디</th><th>사원명</th><th>부서</th><th>직책</th><th>연봉</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="e in emps">
+				<td>{{e.id}}</td>
+				<td>{{e.name}}</td>
+				<td>{{e.dept_id}}</td>
+				<td>{{e.title}}</td>
+				<td>{{e.salary | toFloat}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<script>
+	var app = new Vue({
+		el:'#app',
+		data: {
+			show:false,
+			emps:[
+				{
+			        "id": 1,
+			        "name": "박구곤",
+			        "mailid": "sky98",
+			        "start_date": "1990-03-03",
+			        "manager_id": 0,
+			        "title": "사장",
+			        "dept_id": 118,
+			        "salary": 5000.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "인사부"
+			    },
+			    {
+			        "id": 2,
+			        "name": "손명성",
+			        "mailid": "2xxsig",
+			        "start_date": "1990-03-08",
+			        "manager_id": 1,
+			        "title": "기획부장",
+			        "dept_id": 110,
+			        "salary": 3000.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 3,
+			        "name": "이은선",
+			        "mailid": "ch21175",
+			        "start_date": "1991-06-17",
+			        "manager_id": 1,
+			        "title": "영업부장",
+			        "dept_id": 102,
+			        "salary": 3500.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 4,
+			        "name": "서의홍",
+			        "mailid": "mquickto",
+			        "start_date": "1990-04-07",
+			        "manager_id": 1,
+			        "title": "총무부장",
+			        "dept_id": 101,
+			        "salary": 3000.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "총무부"
+			    },
+				{
+			        "id": 5,
+			        "name": "김심선",
+			        "mailid": "aropebur",
+			        "start_date": "1990-03-04",
+			        "manager_id": 1,
+			        "title": "인사부장",
+			        "dept_id": 118,
+			        "salary": 3200.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "인사부"
+			    },
+			    {
+			        "id": 6,
+			        "name": "전지영",
+			        "mailid": "murguhar",
+			        "start_date": "1991-01-18",
+			        "manager_id": 2,
+			        "title": "과장",
+			        "dept_id": 110,
+			        "salary": 2400.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 7,
+			        "name": "김정미",
+			        "mailid": "enchu",
+			        "start_date": "1990-05-14",
+			        "manager_id": 2,
+			        "title": "과장",
+			        "dept_id": 111,
+			        "salary": 2400.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 8,
+			        "name": "신기웅",
+			        "mailid": "bbiri",
+			        "start_date": "1990-04-07",
+			        "manager_id": 2,
+			        "title": "과장",
+			        "dept_id": 112,
+			        "salary": 2100.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 9,
+			        "name": "이상헌",
+			        "mailid": "acatchpo",
+			        "start_date": "1992-02-09",
+			        "manager_id": 2,
+			        "title": "과장",
+			        "dept_id": 113,
+			        "salary": 2300.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 10,
+			        "name": "최순철",
+			        "mailid": "mhavel",
+			        "start_date": "1991-02-27",
+			        "manager_id": 2,
+			        "title": "과장",
+			        "dept_id": 113,
+			        "salary": 2300.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 11,
+			        "name": "최정선",
+			        "mailid": "cmagee",
+			        "start_date": "1990-05-14",
+			        "manager_id": 3,
+			        "title": "영업대표이사",
+			        "dept_id": 102,
+			        "salary": 2450.0,
+			        "commission_pct": 10.0,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 12,
+			        "name": "안은경",
+			        "mailid": "hgiljum",
+			        "start_date": "1992-01-18",
+			        "manager_id": 3,
+			        "title": "영업대표이사",
+			        "dept_id": 103,
+			        "salary": 2500.0,
+			        "commission_pct": 12.5,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 13,
+			        "name": "김석우",
+			        "mailid": "ysedeghi",
+			        "start_date": "1991-02-18",
+			        "manager_id": 3,
+			        "title": "영업대표이사",
+			        "dept_id": 104,
+			        "salary": 2650.0,
+			        "commission_pct": 10.0,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 14,
+			        "name": "박성규",
+			        "mailid": "mnguyen",
+			        "start_date": "1992-01-22",
+			        "manager_id": 3,
+			        "title": "영업대표이사",
+			        "dept_id": 105,
+			        "salary": 2650.0,
+			        "commission_pct": 15.0,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 15,
+			        "name": "신종필",
+			        "mailid": "adumas",
+			        "start_date": "1991-10-09",
+			        "manager_id": 3,
+			        "title": "영업대표이사",
+			        "dept_id": 106,
+			        "salary": 2400.0,
+			        "commission_pct": 17.5,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 16,
+			        "name": "이기철",
+			        "mailid": "emaduro",
+			        "start_date": "1992-02-07",
+			        "manager_id": 6,
+			        "title": "사원",
+			        "dept_id": 110,
+			        "salary": 2400.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 17,
+			        "name": "구원상",
+			        "mailid": "gsmith",
+			        "start_date": "1990-03-08",
+			        "manager_id": 6,
+			        "title": "사원",
+			        "dept_id": 110,
+			        "salary": 940.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 18,
+			        "name": "서정주",
+			        "mailid": "anozaki",
+			        "start_date": "1991-02-09",
+			        "manager_id": 7,
+			        "title": "사원",
+			        "dept_id": 111,
+			        "salary": 1200.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 19,
+			        "name": "안창환",
+			        "mailid": "vpatel",
+			        "start_date": "1991-08-06",
+			        "manager_id": 7,
+			        "title": "사원",
+			        "dept_id": 111,
+			        "salary": 795.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 20,
+			        "name": "윤정숙",
+			        "mailid": "cnewman",
+			        "start_date": "1991-07-21",
+			        "manager_id": 8,
+			        "title": "사원",
+			        "dept_id": 112,
+			        "salary": 750.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 21,
+			        "name": "장현철",
+			        "mailid": "amarkari",
+			        "start_date": "1991-05-26",
+			        "manager_id": 8,
+			        "title": "사원",
+			        "dept_id": 112,
+			        "salary": 850.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 22,
+			        "name": "장혜숙",
+			        "mailid": "echang",
+			        "start_date": "1990-11-30",
+			        "manager_id": 9,
+			        "title": "사원",
+			        "dept_id": 113,
+			        "salary": 800.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 23,
+			        "name": "강연범",
+			        "mailid": "rpatel",
+			        "start_date": "1990-10-17",
+			        "manager_id": 9,
+			        "title": "사원",
+			        "dept_id": 106,
+			        "salary": 795.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "영업부"
+			    },
+			    {
+			        "id": 24,
+			        "name": "오은경",
+			        "mailid": "bdancs",
+			        "start_date": "1991-03-17",
+			        "manager_id": 10,
+			        "title": "사원",
+			        "dept_id": 113,
+			        "salary": 860.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    },
+			    {
+			        "id": 25,
+			        "name": "이용호",
+			        "mailid": "sschwart",
+			        "start_date": "1991-05-09",
+			        "manager_id": 10,
+			        "title": "사원",
+			        "dept_id": 113,
+			        "salary": 1100.0,
+			        "commission_pct": 0.0,
+			        "dept_name": "기획부"
+			    }
+			]
+		},
+		filters:{
+			toFloat(value) {
+				var num = new Number(value);
+				return num.toFixed(2) //salary 소수점 둘째까지 표시
+			}
+		},
+		methods:{
+			findAllEmployees:function(){
+				this.show = true
+			}
+		}
+	});
+</script>
+</body>
+</html>
